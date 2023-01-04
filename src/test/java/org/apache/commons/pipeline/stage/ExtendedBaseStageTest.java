@@ -84,8 +84,10 @@ public class ExtendedBaseStageTest extends AbstractStageTest {
         assertEquals("Incorrectly reporting objects emitted", 1,stage.getTotalEmits());
         // Make sure the stats message is correct.
         String message = stage.getStatusMessage();
+        System.out.println("Message: " + message);
         assertMatches("Total objects received:1", message);
-        assertMatches("Total objects emitted:1 \\(100\\.000%\\)", message);
+        // Verify regional settings for "." or ",".
+        assertMatches("Total objects emitted:1 \\(100\\,000%\\)", message);
     }
 
     /**
@@ -127,19 +129,20 @@ public class ExtendedBaseStageTest extends AbstractStageTest {
         assertEquals("Incorrectly reporting objects emitted", 1,stage.getTotalEmits());
         // Make sure the stats message is correct.
         String message = stage.getStatusMessage();
-        assertMatches("% time working:100\\.000", message);
-        assertMatches("% time blocking:0\\.000", message);
+        // Check regional settings "." and ","
+        assertMatches("% time working:100\\,000", message);
+        assertMatches("% time blocking:0\\,000", message);
         // Should be between 0.032 and 0.034 seconds. Allow up to 0.099 for busy systems
-        assertMatches("Total net processing time \\(sec\\):0\\.0[0-9]{2}",
+        assertMatches("Total net processing time \\(sec\\):0\\,0[0-9]{2}",
                       message);
-        assertMatches("Total gross processing time \\(sec\\):0\\.0[0-9]{2}",
+        assertMatches("Total gross processing time \\(sec\\):0\\,0[0-9]{2}",
                       message);
-        assertMatches("Average net processing time \\(sec/obj\\):0\\.0[0-9]{2}",
+        assertMatches("Average net processing time \\(sec/obj\\):0\\,0[0-9]{2}",
                       message);
-        assertMatches("Average gross processing time \\(sec/obj\\):0\\.0[0-9]{2}",
+        assertMatches("Average gross processing time \\(sec/obj\\):0\\,0[0-9]{2}",
                       message);
         // Moving window display
-        assertMatches("Average gross processing time in last 1 \\(sec/obj\\):0\\.0[0-9]{2}",
+        assertMatches("Average gross processing time in last 1 \\(sec/obj\\):0\\,0[0-9]{2}",
                       message);
     }
 
@@ -178,8 +181,9 @@ public class ExtendedBaseStageTest extends AbstractStageTest {
         // Check the stats.
         String message = stage.getStatusMessage();
         // Should be 100, maybe 99 in the off chance of a very busy system.
-        assertMatches("% branch A:[0-9]{2,3}\\.[0-9]{3}", message);
-        assertMatches("% branch B:0\\.000", message);
+        // Check regional settings "." and ","
+        assertMatches("% branch A:[0-9]{2,3}\\,[0-9]{3}", message);
+        assertMatches("% branch B:0\\,000", message);
     }
 
     public void testStatusInterval() {
